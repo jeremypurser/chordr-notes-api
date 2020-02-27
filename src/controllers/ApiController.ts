@@ -1,12 +1,5 @@
 import { Request, Response } from 'express';
-import {
-  Controller,
-  Middleware,
-  Get,
-  Put,
-  Post,
-  Delete
-} from '@overnightjs/core';
+import { Controller, Get, Put, Post, Delete } from '@overnightjs/core';
 import { Logger } from '@overnightjs/logger';
 
 @Controller('api')
