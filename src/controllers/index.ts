@@ -1,1 +1,1 @@
-export * from './NotesController';
+export { default } from './NotesController';
