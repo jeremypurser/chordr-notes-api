@@ -10,7 +10,8 @@ const app = express();
 app.use(cors({ origin: 'http://localhost:3000' }));
 app.use(parser.json());
 
-app.get('/notes/:id', getNotes);
+app.get('/:user_id/notes', getNotes);
+// TODO: change route include user_id
 app.post('/notes', postNote);
 
 export default app;
