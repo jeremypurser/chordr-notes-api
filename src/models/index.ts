@@ -1,1 +1,1 @@
-export { default } from './NotesModel';
+export { default, GetParams, NotesGet } from './NotesModel';
