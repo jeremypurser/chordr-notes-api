@@ -11,17 +11,19 @@ interface NotesPost {
   };
 }
 
-interface NotesGet {
-  params: {
-    id: string;
-  };
+export interface NotesGet {
+  params: GetParams;
 }
+
+export type GetParams = {
+  user_id: string;
+};
 
 const NotesModel = {
   get: async ({ params }: NotesGet) => {
-    const { id } = params;
+    const { user_id } = params;
     const query = 'SELECT * from notes WHERE user_id=($1)';
-    return await pool.query(query, [+id]);
+    return await pool.query(query, [+user_id]);
   },
 
   post: async ({ body }: NotesPost) => {

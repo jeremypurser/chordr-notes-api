@@ -1,10 +1,8 @@
 import { Request, Response } from 'express';
-import NotesModel from '../models';
-
-type Params = { id: string };
+import NotesModel, { GetParams } from '../models';
 
 const NotesController = {
-  getNotes: (req: Request<Params>, res: Response) => {
+  getNotes: (req: Request<GetParams>, res: Response) => {
     NotesModel.get(req)
       .then(result => {
         res.json(result.rows);
