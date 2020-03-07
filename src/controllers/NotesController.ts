@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import NotesModel, { UserParams } from '../models';
+import NotesModel, { NoteParams, UserParams } from '../models';
 
 const NotesController = {
   getNotes: (req: Request<UserParams>, res: Response) => {
