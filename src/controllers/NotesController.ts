@@ -14,19 +14,19 @@ const NotesController = {
   postNote: (req: Request<UserParams>, res: Response) => {
     NotesModel.post(req)
       .then(() => {
-        res.status(201).end();
+        res.status(201).json('save');
       })
       .catch(() => {
-        res.status(400).end();
+        res.status(400).json('save');
       });
   },
   editNote: (req: Request<NoteParams>, res: Response) => {
     NotesModel.put(req)
       .then(() => {
-        res.status(201).end();
+        res.status(201).json('update');
       })
       .catch(() => {
-        res.status(400).end();
+        res.status(400).json('update');
       });
   },
   deleteNote: (req: Request<NoteParams>, res: Response) => {
