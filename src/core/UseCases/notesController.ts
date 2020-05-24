@@ -14,7 +14,7 @@ export interface NotesController {
 
 export default function makeNotesController(
   dbAdapter: DbAdapter
-): NotesController {
+): Readonly<NotesController> {
   return {
     // Create
     addNote: (userId, note) =>

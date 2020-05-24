@@ -42,7 +42,9 @@ function objectToParams(
   }
 }
 
-export default function makePostgresAdapter(dbConnection: Pool): DbAdapter {
+export default function makePostgresAdapter(
+  dbConnection: Pool
+): Readonly<DbAdapter> {
   return {
     // CREATE
     post(table: string, userId, entity) {
