@@ -1,5 +1,3 @@
-export * from './Chord';
-
 export interface Entity {
   id: string;
 }
@@ -18,12 +16,13 @@ export interface Chord extends Entity {
   };
 }
 
-type Status = 'posted' | 'updated' | 'marked for deletion';
+type Status = 'created' | 'retrieved' | 'updated' | 'marked for deletion';
 
-export type ChordrResponse<D, S extends Status | undefined> =
+export type ChordrResponse<D, S extends Status> =
   | {
       // Get request
       success: true;
+      status: S;
       data: D;
     }
   | {
@@ -35,5 +34,5 @@ export type ChordrResponse<D, S extends Status | undefined> =
   | {
       success: false;
       status: 'error';
-      error: string[];
+      error: string;
     };
