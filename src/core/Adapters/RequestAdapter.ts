@@ -7,7 +7,7 @@ export function expressAdapter(
   return function (req: Request, res: Response) {
     switch (req.method) {
       case 'POST':
-        controller(req.body).then(data => {
+        controller(req.params.userId, req.body).then(data => {
           res.status(data.success ? 201 : 500).json(data);
         });
         break;
