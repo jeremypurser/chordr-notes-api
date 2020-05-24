@@ -42,36 +42,41 @@ function objectToParams(
   }
 }
 
-export function postgresAdapter(dbConnection: Pool): DbAdapter {
+export default function postgresAdapter(dbConnection: Pool): DbAdapter {
   return {
     // CREATE
     post(table: string, entity) {
       const postParams = objectToParams('post', entity);
 
-      return dbConnection.query(
-        `INSERT INTO ${table} ${postParams.params} VALUES ${postParams.postIndices}`,
-        postParams.newValues
-      );
+      return dbConnection
+        .query(
+          `INSERT INTO ${table} ${postParams.params} VALUES ${postParams.postIndices}`,
+          postParams.newValues
+        )
+        .then(result => result.rows);
     },
     // READ -- get by id; TODO -- get all
     get(table: string, attribute: string, id: string) {
-      return dbConnection.query(
-        `SELECT * from ${table} WHERE ${attribute}=($1)`,
-        [[+id]]
-      );
+      return dbConnection
+        .query(`SELECT * from ${table} WHERE ${attribute}=($1)`, [[+id]])
+        .then(result => result.rows);
     },
     // UPDATE
     update(table: string, entity) {
       const updateParams = objectToParams('update', entity);
 
-      return dbConnection.query(
-        `UPDATE ${table} SET ${updateParams.params}`,
-        updateParams.newValues
-      );
+      return dbConnection
+        .query(
+          `UPDATE ${table} SET ${updateParams.params}`,
+          updateParams.newValues
+        )
+        .then(result => result.rows);
     },
     // DELETE
     delete(table: string, id: string) {
-      return dbConnection.query(`DELETE FROM ${table} WHERE id=$${id}`);
+      return dbConnection
+        .query(`DELETE FROM ${table} WHERE id=$${id}`)
+        .then(result => result.rows);
     },
   };
 }
