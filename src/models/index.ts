@@ -1,1 +1,1 @@
-export { default, NoteParams, NotesGet, UserParams } from './NotesModel';
+export * from './notesPostgres';
