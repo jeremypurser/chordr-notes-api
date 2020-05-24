@@ -34,7 +34,6 @@ export function expressAdapter(
         break;
       default:
         throw new Error('Invalid request');
-        break;
     }
   };
 }
