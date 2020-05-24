@@ -28,12 +28,12 @@ export default function makeNotesController(
         .catch(error => ({
           success: false,
           status: 'error',
-          error: error as string,
+          error: error,
         })),
     // Read 1
     getNoteById: id =>
       dbAdapter
-        .get('notes', 'user_id', id)
+        .get('notes', 'id', id)
         .then(data => ({
           success: true as true,
           status: 'retrieved' as 'retrieved',
@@ -42,12 +42,12 @@ export default function makeNotesController(
         .catch(error => ({
           success: false,
           status: 'error',
-          error: error as string,
+          error: error,
         })),
     // Read all
     getAllNotes: userId =>
       dbAdapter
-        .get('notes', 'id', userId)
+        .get('notes', 'user_id', userId)
         .then(data => ({
           success: true as true,
           status: 'retrieved' as 'retrieved',
@@ -56,7 +56,7 @@ export default function makeNotesController(
         .catch(error => ({
           success: false,
           status: 'error',
-          error: error as string,
+          error: error,
         })),
     // Update
     updateNote: note =>
@@ -70,7 +70,7 @@ export default function makeNotesController(
         .catch(error => ({
           success: false,
           status: 'error',
-          error: error as string,
+          error: error,
         })),
     // Delete
     deleteNote: id =>
@@ -84,7 +84,7 @@ export default function makeNotesController(
         .catch(error => ({
           success: false,
           status: 'error',
-          error: error as string,
+          error: error,
         })),
   };
 }
