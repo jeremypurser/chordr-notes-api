@@ -32,6 +32,7 @@ export type ChordrResponse<D, S extends Status> =
       data: D;
     }
   | {
+      // Error
       success: false;
       status: 'error';
       error: string;
