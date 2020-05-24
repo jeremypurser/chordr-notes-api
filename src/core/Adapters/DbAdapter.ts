@@ -1,4 +1,5 @@
-import { Entity, NotesController } from '../Entities';
+import { Entity } from '../Entities';
+import { NotesController } from '../UseCases/notesController';
 
 export interface DbAdapter {
   post(table: string, a: { [key: string]: any }): Promise<any>;
