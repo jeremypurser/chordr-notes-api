@@ -1,3 +1,19 @@
-import app from './router';
+import parser from 'body-parser';
+import cors from 'cors';
+import express from 'express';
+import { config } from './config/config';
+import router from './config/routes';
 
-app.listen(3001, () => console.log('Running on port 3001'));
+const app = express();
+
+// ====================== MIDDLEWARE ==========================
+app.use(cors({ origin: 'http://localhost:3000' }));
+app.use(parser.json());
+
+// ====================== ROUTING ==============================
+app.use('/api/v1', router);
+
+// ====================== OPEN PORT ============================
+app.listen(config.port, () => {
+  console.log(`Running on port ${config.port}`);
+});
