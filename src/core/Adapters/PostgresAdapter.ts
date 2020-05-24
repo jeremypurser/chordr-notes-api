@@ -58,7 +58,7 @@ export default function postgresAdapter(dbConnection: Pool): DbAdapter {
     // READ -- get by id; TODO -- get all
     get(table: string, attribute: string, id: string) {
       return dbConnection
-        .query(`SELECT * from ${table} WHERE ${attribute}=($1)`, [[+id]])
+        .query(`SELECT * from ${table} WHERE ${attribute}=($${id})`, [+id])
         .then(result => result.rows);
     },
     // UPDATE
