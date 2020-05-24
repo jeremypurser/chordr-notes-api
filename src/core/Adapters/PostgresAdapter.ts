@@ -45,8 +45,8 @@ function objectToParams(
 export default function postgresAdapter(dbConnection: Pool): DbAdapter {
   return {
     // CREATE
-    post(table: string, entity) {
-      const postParams = objectToParams('post', entity);
+    post(table: string, userId, entity) {
+      const postParams = objectToParams('post', { user_id: userId, ...entity });
 
       return dbConnection
         .query(

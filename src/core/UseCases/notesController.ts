@@ -3,6 +3,7 @@ import { Chord, ChordrResponse } from '../Entities';
 
 export interface NotesController {
   addNote(
+    userId: string,
     note: Exclude<Chord, 'id'>
   ): Promise<ChordrResponse<Chord, 'created'>>;
   getNoteById(id: string): Promise<ChordrResponse<Chord, 'retrieved'>>;
@@ -16,9 +17,9 @@ export default function makeNotesController(
 ): NotesController {
   return {
     // Create
-    addNote: note =>
+    addNote: (userId, note) =>
       dbAdapter
-        .post('notes', note)
+        .post('notes', userId, note)
         .then(data => ({
           success: true as true,
           status: 'created' as 'created',

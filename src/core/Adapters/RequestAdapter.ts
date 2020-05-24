@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { ChordrResponse } from '../Entities';
 
 export function expressAdapter(
-  controller: (a: any) => Promise<ChordrResponse<any, any>>
+  controller: (a: any, b?: any) => Promise<ChordrResponse<any, any>>
 ) {
   return function (req: Request, res: Response) {
     switch (req.method) {
