@@ -11,6 +11,7 @@ export interface User extends Entity {
 type GuitarString = 0 | 1 | 2 | 3 | 4 | 5;
 
 export interface Chord extends Entity {
+  name: string;
   chord: {
     [guitarString in GuitarString]: number;
   };
