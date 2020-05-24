@@ -44,6 +44,7 @@ function objectToParams(
 
 export function postgresAdapter(dbConnection: Pool): DbAdapter {
   return {
+    // CREATE
     post(table: string, entity) {
       const postParams = objectToParams('post', entity);
 
@@ -52,12 +53,14 @@ export function postgresAdapter(dbConnection: Pool): DbAdapter {
         postParams.newValues
       );
     },
+    // READ -- get by id; TODO -- get all
     get(table: string, attribute: string, id: string) {
       return dbConnection.query(
         `SELECT * from ${table} WHERE ${attribute}=($1)`,
         [[+id]]
       );
     },
+    // UPDATE
     update(table: string, entity) {
       const updateParams = objectToParams('update', entity);
 
@@ -66,6 +69,7 @@ export function postgresAdapter(dbConnection: Pool): DbAdapter {
         updateParams.newValues
       );
     },
+    // DELETE
     delete(table: string, id: string) {
       return dbConnection.query(`DELETE FROM ${table} WHERE id=$${id}`);
     },
