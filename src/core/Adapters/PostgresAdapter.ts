@@ -7,78 +7,86 @@ interface PostgresQuery {
   newValues: any[];
 }
 
-// Helper for Postgres queries
-function objectToParams(
-  method: 'post' | 'update',
-  object: { [key: string]: any }
-): PostgresQuery {
-  // Remove id from object
-  const pairsWithoutId = Object.entries(object)
-    .filter(([key]) => key !== 'id')
-    .reduce(
-      (acc, [key, value]) => ({
-        keys: [...acc.keys, key.toString()],
-        values: [...acc.values, value.toString()],
-      }),
-      { keys: [], values: [] }
-    );
+export default class PostgresAdapter implements DbAdapter {
+  dbConnection: Pool;
 
-  switch (method) {
-    case 'post':
-      return {
-        params: `(${pairsWithoutId.keys})`,
-        postIndices: `(${pairsWithoutId.keys.map(
-          (key, index) => `$${index + 1}`
-        )})`,
-        newValues: pairsWithoutId.values,
-      };
-    case 'update':
-      return {
-        params: pairsWithoutId.keys
-          .map((key, index) => `${key}=${index + 1}`)
-          .join(', '),
-        newValues: pairsWithoutId.values,
-      };
+  constructor(dbConnection: Pool) {
+    this.dbConnection = dbConnection;
   }
-}
 
-export default function makePostgresAdapter(
-  dbConnection: Pool
-): Readonly<DbAdapter> {
-  return {
-    // CREATE
-    post(table: string, userId, entity) {
-      const postParams = objectToParams('post', { user_id: userId, ...entity });
+  // Transform helper
+  objectToParams(
+    method: 'post' | 'update',
+    object: { [key: string]: any }
+  ): PostgresQuery {
+    // Remove id from object
+    const pairsWithoutId = Object.entries(object)
+      .filter(([key]) => key !== 'id')
+      .reduce(
+        (acc, [key, value]) => ({
+          keys: [...acc.keys, key.toString()],
+          values: [...acc.values, value.toString()],
+        }),
+        { keys: [], values: [] }
+      );
 
-      return dbConnection
-        .query(
-          `INSERT INTO ${table} ${postParams.params} VALUES ${postParams.postIndices}`,
-          postParams.newValues
-        )
-        .then(result => result.rows);
-    },
-    // READ -- get by id; TODO -- get all
-    get(table: string, attribute: string, id: string) {
-      return dbConnection
-        .query(`SELECT * from ${table} WHERE ${attribute}=($${id})`, [+id])
-        .then(result => result.rows);
-    },
-    // UPDATE
-    update(table: string, entity) {
-      const updateParams = objectToParams('update', entity);
+    switch (method) {
+      case 'post':
+        return {
+          params: `(${pairsWithoutId.keys})`,
+          postIndices: `(${pairsWithoutId.keys.map(
+            (_key, index) => `$${index + 1}`
+          )})`,
+          newValues: pairsWithoutId.values,
+        };
+      case 'update':
+        return {
+          params: pairsWithoutId.keys
+            .map((key, index) => `${key}=${index + 1}`)
+            .join(', '),
+          newValues: pairsWithoutId.values,
+        };
+    }
+  }
 
-      return dbConnection
-        .query(
-          `UPDATE ${table} SET ${updateParams.params}`,
-          updateParams.newValues
-        )
-        .then(result => result.rows);
-    },
-    // DELETE
-    delete(table: string, id: string) {
-      return dbConnection
-        .query(`DELETE FROM ${table} WHERE id=$${id}`)
-        .then(result => result.rows);
-    },
-  };
+  // CREATE
+  post(table: string, userId: string, entity: { [key: string]: string }) {
+    const postParams = this.objectToParams('post', {
+      user_id: userId,
+      ...entity,
+    });
+
+    return this.dbConnection
+      .query(
+        `INSERT INTO ${table} ${postParams.params} VALUES ${postParams.postIndices}`,
+        postParams.newValues
+      )
+      .then(result => result.rows);
+  }
+
+  // READ
+  get(table: string, attribute: string, id: string) {
+    return this.dbConnection
+      .query(`SELECT * from ${table} WHERE ${attribute}=($${id})`, [+id])
+      .then(result => result.rows);
+  }
+
+  // UPDATE
+  update(table: string, entity: { [key: string]: any }) {
+    const updateParams = this.objectToParams('update', entity);
+
+    return this.dbConnection
+      .query(
+        `UPDATE ${table} SET ${updateParams.params}`,
+        updateParams.newValues
+      )
+      .then(result => result.rows);
+  }
+
+  // DELETE
+  delete(table: string, id: string) {
+    return this.dbConnection
+      .query(`DELETE FROM ${table} WHERE id=$${id}`)
+      .then(result => result.rows);
+  }
 }

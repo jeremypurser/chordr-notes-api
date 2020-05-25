@@ -1,4 +1,4 @@
-import makeNotesController from '../core/UseCases/notesController';
-import makePostgresAdapter from '../models/notesPostgres';
+import ChordrNotesController from '../core/UseCases/notesController';
+import postgresAdapter from '../models/notesPostgres';
 
-export default makeNotesController(makePostgresAdapter);
+export default new ChordrNotesController(postgresAdapter);
