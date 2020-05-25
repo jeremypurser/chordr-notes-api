@@ -10,8 +10,12 @@ interface PostgresQuery {
 export default class PostgresAdapter implements DbAdapter {
   dbConnection: Pool;
 
-  constructor(dbConnection: Pool) {
+  private constructor(dbConnection: Pool) {
     this.dbConnection = dbConnection;
+  }
+
+  static from(dbConnection: Pool) {
+    return new this(dbConnection);
   }
 
   // Transform helper

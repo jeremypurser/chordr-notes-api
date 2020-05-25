@@ -1,7 +1,7 @@
 import { DbAdapter } from '../Adapters/DbAdapter';
 import { Chord, ChordrResponse } from '../Entities';
 
-export interface NotesController {
+export interface Notes {
   addNote(
     userId: string,
     note: Exclude<Chord, 'id'>
@@ -12,12 +12,16 @@ export interface NotesController {
   deleteNote(id: string): Promise<ChordrResponse<Chord, 'marked for deletion'>>;
 }
 
-export default class ChordrNotesController implements NotesController {
+export default class NotesController implements Notes {
   // Injected data persistence
   db: DbAdapter;
 
-  constructor(dbAdatper: DbAdapter) {
+  private constructor(dbAdatper: DbAdapter) {
     this.db = dbAdatper;
+  }
+
+  static from(dbAdatper: DbAdapter) {
+    return new this(dbAdatper);
   }
 
   // Create
