@@ -1,8 +1,8 @@
 import parser from 'body-parser';
 import cors from 'cors';
 import express from 'express';
-import { config } from './config/config';
-import router from './config/routes';
+import router from './api/v1/routes';
+import { config } from './config';
 
 const app = express();
 

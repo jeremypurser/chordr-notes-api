@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import notesController from '../controllers';
-import { expressAdapter } from '../core/Adapters/RequestAdapter';
+import notesController from '../../controllers';
+import { expressAdapter } from '../../core/Adapters/RequestAdapter';
 
 // base => /api/v1
 const router = Router();
