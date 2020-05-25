@@ -8,7 +8,7 @@ interface PostgresQuery {
 }
 
 export default class PostgresAdapter implements DbAdapter {
-  dbConnection: Pool;
+  private dbConnection: Pool;
 
   private constructor(dbConnection: Pool) {
     this.dbConnection = dbConnection;
@@ -19,7 +19,7 @@ export default class PostgresAdapter implements DbAdapter {
   }
 
   // Transform helper
-  objectToParams(
+  private objectToParams(
     method: 'post' | 'update',
     object: { [key: string]: any }
   ): PostgresQuery {

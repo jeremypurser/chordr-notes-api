@@ -14,7 +14,7 @@ export interface Notes {
 
 export default class NotesController implements Notes {
   // Injected data persistence
-  db: DbAdapter;
+  private db: DbAdapter;
 
   private constructor(dbAdatper: DbAdapter) {
     this.db = dbAdatper;
